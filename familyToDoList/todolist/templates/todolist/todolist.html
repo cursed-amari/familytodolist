@@ -1,0 +1,32 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}To Do List{% endblock %}
+
+{% block content %}
+<h2>Личные задачи</h2>
+<ul>
+    {% for task in personal_tasks %}
+        <li>{{ task.title }}</li>
+        <ul>{{ task.task_type }}</ul>
+        <ul>{{ task.context }}</ul>
+        <ul>{{ task.complexity }}</ul>
+        <ul>{{ task.create_date }}</ul>
+        <ul>{{ task.last_update }}</ul>
+        <ul>{{ task.run_time }}</ul>
+        <ul>{{ task.completed }}</ul>
+        <ul>{{ task.created_by }}</ul>
+        <li>
+            {% for subtask in task.subtasks.all %}
+                <li>{{ subtask.title }} {% if subtask.completed %}(выполнено){% endif %}</li>
+                <ul>{{ subtask.task_type }}</ul>
+                <ul>{{ subtask.context }}</ul>
+                <ul>{{ subtask.complexity }}</ul>
+                <ul>{{ subtask.create_date }}</ul>
+                <ul>{{ subtask.last_update }}</ul>
+                <ul>{{ subtask.run_time }}</ul>
+                <ul>{{ subtask.completed }}</ul>
+            {% endfor %}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
