@@ -1,0 +1,12 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Add task{% endblock %}
+
+{% block content %}
+  <h1>Добавить задачу</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+  </form>
+{% endblock %}

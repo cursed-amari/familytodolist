@@ -15,6 +15,8 @@
         <ul>{{ task.run_time }}</ul>
         <ul>{{ task.completed }}</ul>
         <ul>{{ task.created_by }}</ul>
+        <input type="checkbox" class="task-completed-checkbox" data-task-id="{{ task.id }}" {% if task.completed %}checked{% endif %}>
+        <a href='add_subtask/{{ task.id }}/'>add sub task</a>
         <li>
             {% for subtask in task.subtasks.all %}
                 <li>{{ subtask.title }} {% if subtask.completed %}(выполнено){% endif %}</li>
@@ -42,6 +44,7 @@
         <ul>{{ task.task.run_time }}</ul>
         <ul>{{ task.task.completed }}</ul>
         <ul>{{ task.task.created_by }}</ul>
+        <input type="checkbox" class="task-completed-checkbox" data-task-id="{{ task_share.task.id }}" {% if task_share.task.completed %}checked{% endif %}>
         <li>
             {% for subtask in task.task.subtasks.all %}
                 <li>{{ subtask.title }} {% if subtask.completed %}(выполнено){% endif %}</li>
@@ -57,4 +60,31 @@
         </li>
     {% endfor %}
 </ul>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.task-completed-checkbox').change(function() {
+        var taskId = $(this).data('task-id');
+        var isChecked = $(this).is(':checked');
+        
+        $.ajax({
+          url: '{% url "toggle_task_completion" 0 %}'.replace('0', taskId),
+          method: 'POST',
+          data: {
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+          },
+          success: function(response) {
+            if (response.success) {
+              console.log('Task completion toggled successfully.');
+            } else {
+              console.log('Failed to toggle task completion.');
+            }
+          },
+          error: function(xhr) {
+            console.log('Error: ' + xhr.responseText);
+          }
+        });
+      });
+    });
+  </script>
 {% endblock %}
