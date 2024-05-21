@@ -3,88 +3,104 @@
 {% block title %}To Do List{% endblock %}
 
 {% block content %}
-<h2>personal task</h2>
+<h2>Personal Tasks</h2>
 <ul>
     {% for task in personal_tasks %}
         <li>{{ task.title }}</li>
-        <ul>{{ task.task_type }}</ul>
-        <ul>{{ task.context }}</ul>
-        <ul>{{ task.complexity }}</ul>
-        <ul>{{ task.create_date }}</ul>
-        <ul>{{ task.last_update }}</ul>
-        <ul>{{ task.run_time }}</ul>
-        <ul>{{ task.completed }}</ul>
-        <ul>{{ task.created_by }}</ul>
-        <input type="checkbox" class="task-completed-checkbox" data-task-id="{{ task.id }}" {% if task.completed %}checked{% endif %}>
-        <a href='add_subtask/{{ task.id }}/'>add sub task</a>
-        <li>
-            {% for subtask in task.subtasks.all %}
-                <li>{{ subtask.title }} {% if subtask.completed %}(выполнено){% endif %}</li>
-                <ul>Sub task: {{ task.title }}</ul>
-                <ul>{{ subtask.task_type }}</ul>
-                <ul>{{ subtask.context }}</ul>
-                <ul>{{ subtask.complexity }}</ul>
-                <ul>{{ subtask.create_date }}</ul>
-                <ul>{{ subtask.last_update }}</ul>
-                <ul>{{ subtask.run_time }}</ul>
-                <ul>{{ subtask.completed }}</ul>
-            {% endfor %}
-        </li>
+        <ul>
+            <li>{{ task.task_type }}</li>
+            <li>{{ task.context }}</li>
+            <li>{{ task.complexity }}</li>
+            <li>{{ task.create_date }}</li>
+            <li>{{ task.last_update }}</li>
+            <li>{{ task.run_time }}</li>
+            <li>{{ task.completed }}</li>
+            <li>{{ task.created_by }}</li>
+            <input type="checkbox" class="task-completed-checkbox" data-task-id="{{ task.id }}" {% if task.completed %}checked{% endif %}>
+            <a href='add_subtask/{{ task.id }}/'>Add Sub Task</a>
+            <a href="{% url 'edit_task' task.id %}">Edit</a>
+            <a href="{% url 'delete_task' task.id %}">Delete</a>
+            <ul>
+                {% for subtask in task.subtasks.all %}
+                    <li>{{ subtask.title }} {% if subtask.completed %}(Completed){% endif %}</li>
+                    <li>Sub Task: {{ task.title }}</li>
+                    <li>{{ subtask.task_type }}</li>
+                    <li>{{ subtask.context }}</li>
+                    <li>{{ subtask.complexity }}</li>
+                    <li>{{ subtask.create_date }}</li>
+                    <li>{{ subtask.last_update }}</li>
+                    <li>{{ subtask.run_time }}</li>
+                    <li>{{ subtask.completed }}</li>
+                    <input type="checkbox" class="subtask-completed-checkbox" data-subtask-id="{{ subtask.id }}" {% if subtask.completed %}checked{% endif %}>
+                    <a href="{% url 'edit_subtask' subtask.id %}">Edit</a>
+                    <a href="{% url 'delete_subtask' subtask.id %}">Delete</a>
+                {% endfor %}
+            </ul>
+        </ul>
     {% endfor %}
 </ul>
-<h2>shared tasks</h2>
+<h2>Shared Tasks</h2>
 <ul>
-    {% for task in shared_tasks %}
-        <li>{{ task.task.title }}</li>
-        <ul>{{ task.task.task_type }}</ul>
-        <ul>{{ task.task.context }}</ul>
-        <ul>{{ task.task.complexity }}</ul>
-        <ul>{{ task.task.create_date }}</ul>
-        <ul>{{ task.task.last_update }}</ul>
-        <ul>{{ task.task.run_time }}</ul>
-        <ul>{{ task.task.completed }}</ul>
-        <ul>{{ task.task.created_by }}</ul>
-        <input type="checkbox" class="task-completed-checkbox" data-task-id="{{ task_share.task.id }}" {% if task_share.task.completed %}checked{% endif %}>
-        <li>
-            {% for subtask in task.task.subtasks.all %}
-                <li>{{ subtask.title }} {% if subtask.completed %}(выполнено){% endif %}</li>
-                <ul>Sub task: {{ task.task.title }}</ul>
-                <ul>{{ subtask.task_type }}</ul>
-                <ul>{{ subtask.context }}</ul>
-                <ul>{{ subtask.complexity }}</ul>
-                <ul>{{ subtask.create_date }}</ul>
-                <ul>{{ subtask.last_update }}</ul>
-                <ul>{{ subtask.run_time }}</ul>
-                <ul>{{ subtask.completed }}</ul>
-            {% endfor %}
-        </li>
+    {% for task_share in shared_tasks %}
+        <li>{{ task_share.task.title }}</li>
+        <ul>
+            <li>Task Type: {{ task_share.task.task_type }}</li>
+            <li>Context: {{ task_share.task.context }}</li>
+            <li>Complexity: {{ task_share.task.complexity }}</li>
+            <li>Create Date: {{ task_share.task.create_date }}</li>
+            <li>Last Update: {{ task_share.task.last_update }}</li>
+            <li>Run Time: {{ task_share.task.run_time }}</li>
+            <li>Completed: {{ task_share.task.completed }}</li>
+            <li>Created By: {{ task_share.task.created_by }}</li>
+            <input type="checkbox" class="task-completed-checkbox" data-task-id="{{ task_share.task.id }}" {% if task_share.task.completed %}checked{% endif %}>
+            <a href="{% url 'edit_shared_task' task_share.task.id %}">Edit</a>
+            <a href="{% url 'delete_shared_task' task_share.task.id %}">Delete</a>
+            <ul>
+                {% for subtask in task_share.task.subtasks.all %}
+                    <li>{{ subtask.title }} {% if subtask.completed %}(Completed){% endif %}</li>
+                    <ul>
+                        <li>Task Type: {{ subtask.task_type }}</li>
+                        <li>Context: {{ subtask.context }}</li>
+                        <li>Complexity: {{ subtask.complexity }}</li>
+                        <li>Create Date: {{ subtask.create_date }}</li>
+                        <li>Last Update: {{ subtask.last_update }}</li>
+                        <li>Run Time: {{ subtask.run_time }}</li>
+                        <li>Completed: {{ subtask.completed }}</li>
+                        <input type="checkbox" class="subtask-completed-checkbox" data-subtask-id="{{ subtask.id }}" {% if subtask.completed %}checked{% endif %}>
+                        <a href="{% url 'edit_shared_subtask' subtask.id %}">Edit</a>
+                        <a href="{% url 'delete_shared_subtask' subtask.id %}">Delete</a>
+                    </ul>
+                {% endfor %}
+            </ul>
+        </ul>
     {% endfor %}
 </ul>
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('.task-completed-checkbox').change(function() {
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.task-completed-checkbox').change(function() {
         var taskId = $(this).data('task-id');
-        var isChecked = $(this).is(':checked');
         
         $.ajax({
-          url: '{% url "toggle_task_completion" 0 %}'.replace('0', taskId),
-          method: 'POST',
-          data: {
-            'csrfmiddlewaretoken': '{{ csrf_token }}',
-          },
-          success: function(response) {
-            if (response.success) {
-              console.log('Task completion toggled successfully.');
-            } else {
-              console.log('Failed to toggle task completion.');
-            }
-          },
-          error: function(xhr) {
-            console.log('Error: ' + xhr.responseText);
-          }
+            url: '{% url "toggle_main_task_completion" 0 %}'.replace('0', taskId),
+            method: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
         });
-      });
     });
-  </script>
+
+    $('.subtask-completed-checkbox').change(function() {
+        var subtaskId = $(this).data('subtask-id');
+        
+        $.ajax({
+            url: '{% url "toggle_subtask_completion" 0 %}'.replace('0', subtaskId),
+            method: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+        });
+    });
+});
+</script>
 {% endblock %}
